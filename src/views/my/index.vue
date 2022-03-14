@@ -18,7 +18,7 @@
      <div class="date-states">
        <div class="data-item">
          <span class="count">0</span>
-         <span class="text">头条</span>
+         <span class="text">发帖</span>
        </div>
        <div class="data-item">
          <span class="count">0</span>
@@ -52,7 +52,6 @@
        </van-grid-item>
    </van-grid>
    <van-cell title="消息通知" is-link />
-   <van-cell class="mb-9" title="小智同学" is-link />
    <van-cell title="退出登录" clickable v-if="user" class="logout-cell" @click="onLogout"/>
 
  </div>
