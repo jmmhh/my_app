@@ -68,6 +68,25 @@
 
     <!-- 底部区域 -->
     <div class="article-bottom">
+      <van-button
+          @click="appearIt"
+          class="comment-btn"
+          type="default"
+          round
+          size="small"
+      >写评论</van-button>
+      <van-cell-group>
+        <van-field v-model="value" v-show="writeComment" placeholder="请输入" />
+      </van-cell-group>
+      <van-button
+          style="background-color: #3296fa;
+          color: #f2ffff"
+          v-show="writeComment"
+          @click="write"
+          type="default"
+          round
+          size="small"
+      >提交</van-button>
       <van-icon
           @click="showPopup"
           name="comment-o"
@@ -82,7 +101,7 @@
           color="#777"
           name="good-job-o"
       />
-      <van-icon name="share" color="#777777"></van-icon>
+
     </div>
     <van-popup v-model="show" round closeable position="bottom" :style="{ height: '50%' }" >
       <van-list
@@ -104,15 +123,17 @@
             <span class="commentUsername">{{item.username}}</span>
             <span class="commentContent">{{item.content}}</span>
             <span class="commentTime">{{item.time}}</span>
+
           </div>
         </van-cell>
       </van-list>
+
     </van-popup>
     <!-- /底部区域 -->
   </div>
 </template>
 <script>
-import {IdArticle,getComment} from "@/api/article";
+import {IdArticle,getComment,uploadComment} from "@/api/article";
 import {userinfo} from "@/api/user";
 
 export default {
@@ -126,6 +147,8 @@ export default {
   },
   data () {
     return {
+      writeComment:false,
+      value:'',
       articleItem:{},
       userinfo:{},
       code:'',
@@ -141,6 +164,18 @@ export default {
     this.getArticleById()
   },
   methods: {
+    appearIt(){
+      this.writeComment=true
+    },
+    write(){
+      if (this.value===''){
+        this.$notify({ type: 'warning', message: '请输入评论!' });
+      }else{
+        this.uploadComment()
+      }
+
+
+    },
     onLoad() {
       this.getComments()
       // 异步更新数据
@@ -153,7 +188,8 @@ export default {
 
     },
     showPopup() {
-      this.show = true;
+      this.show = true
+      this.writeComment=false
     },
     onClickLeft(){
       this.$router.back()
@@ -190,6 +226,21 @@ export default {
         console.log(err)
       }
     },
+    async uploadComment(){
+      const params={userimg:this.$store.state.userImg,username:this.$store.state.username,id:this.articleID,content:this.value}
+      try {
+        const {data}=await uploadComment(params)
+        if (data.code==='200'){
+          this.$notify({ type: 'success', message: data.data });
+          this.writeComment=false
+          this.show=true
+        }else{
+          this.$notify({ type: 'warning', message: data.data });
+        }
+      }catch (err){
+        console.log(err)
+      }
+    }
 
   }
 }
@@ -292,6 +343,14 @@ export default {
     height: 88px;
     border-top: 1px solid #d8d8d8;
     background-color: #fff;
+
+    .van-icon {
+      font-size: 40px;
+      .van-info {
+        font-size: 16px;
+        background-color: #e22829;
+      }
+    }
     .comment-btn {
       width: 282px;
       height: 46px;
@@ -299,13 +358,6 @@ export default {
       font-size: 30px;
       line-height: 46px;
       color: #a7a7a7;
-    }
-    .van-icon {
-      font-size: 40px;
-      .van-info {
-        font-size: 16px;
-        background-color: #e22829;
-      }
     }
   }
 }
@@ -336,4 +388,5 @@ export default {
     }
   }
 }
+
 </style>

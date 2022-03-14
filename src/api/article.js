@@ -1,5 +1,7 @@
 import {request} from "@/utils/requests";
 
+import qs from "qs";
+
 
 export const allArticle = () => {
     return request({
@@ -30,5 +32,13 @@ export const IdArticle = (articleId) =>{
         method:'GET',
         url:'/frontend/oneArticle',
         params: articleId
+    })
+}
+
+export const uploadComment = (content) =>{
+    return request({
+        method:'post',
+        url:'/frontend//makeComment',
+        data:qs.stringify(content)
     })
 }

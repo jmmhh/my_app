@@ -257,9 +257,9 @@ let Query=( sql , ...params )=>{
     let makeComment=function(comment){
         let sql=`
         insert into 
-            comments (articleId,name,content) 
+            comments (articleId,username,content,userimg) 
         values 
-            (${comment.id},'${comment.name}','${comment.content}');
+            (${comment.id},'${comment.username}','${comment.content}','${comment.userimg}');
         `;
         return sql;
     }

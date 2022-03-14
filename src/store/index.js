@@ -24,7 +24,7 @@ export default new Vuex.Store({
         },
         setUserImg(state,data){
             state.userImg=data
-            setItem(UserImg,'http://127.0.0.1:8081'+data)
+            setItem(UserImg,data)
         }
     },
     actions:{

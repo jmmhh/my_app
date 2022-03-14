@@ -156,6 +156,7 @@ router.post('/makeComment',(req,res)=>{
         res.send({"code":"200","data":"添加评论成功！"});
     },err=>{
         res.send({"code":"400","err":"服务器炸了"});
+        console.log(err);
     })
 })
 //获取评论
