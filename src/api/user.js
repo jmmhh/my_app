@@ -2,7 +2,6 @@
 //用户相关请求
 import {request} from "@/utils/requests"
 import qs from 'qs'
-
 export const login = (data)=>{
     return request({
         method:'post',

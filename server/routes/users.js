@@ -37,7 +37,6 @@ router.post('/reguser',joi(userCheck),(req,res)=>{
   let userinfo=req.body;
   const sqlStr=db.reguser(userinfo.username);
   db.Query(sqlStr).then(data=>{
-    //在数据控能够查找到结果时，将token发送给前台
     if(data.length){
       return res.send({"code":"401","message":"该用户名已存在！"});
     }
@@ -73,11 +72,9 @@ router.post('/getInfo',(req,res)=>{
 
 //更改个人信息
 router.post('/changeInfo',upload, (req, res)=> {
-  //如果有传了图片，才
     let params=req.body;
     console.log(params);
     console.log(params.change === 'true');
-    //如果有图片，那么就获取图片
     if(params.nickname === ''|| params.username ===''){
       return res.send({status:'400',message:'修改错误'})
     }
